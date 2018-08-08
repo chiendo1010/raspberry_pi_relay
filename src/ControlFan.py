@@ -1,6 +1,7 @@
 #!/usr/bin/python  
 import RPi.GPIO as GPIO  
 import time  
+import Adafruit_DHT
   
 GPIO.setmode(GPIO.BCM)  
   
@@ -29,6 +30,14 @@ try:
   time.sleep(SleepTimeL);    
   GPIO.cleanup()  
   print "Good bye!"  
+
+  humidity, temperature = Adafruit_DHT.read_retry(22, 4)
+	
+  if humidity is not None and temperature is not None:
+   print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+  else:
+   print('Failed to get reading. Try again!')
+
   
 # End program cleanly with keyboard  
 except KeyboardInterrupt:  
@@ -36,3 +45,7 @@ except KeyboardInterrupt:
   
   # Reset GPIO settings  
   GPIO.cleanup()
+
+
+
+
