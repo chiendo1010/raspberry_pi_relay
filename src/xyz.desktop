@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=StartFan
+Comment=
+Exec=lxterminal -e python /home/pi/raspberry_pi_relay/trunk/src/ControlFan.py
+StartupNotify=true
+Terminal=true
+Hidden=false
