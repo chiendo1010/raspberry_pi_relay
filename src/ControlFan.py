@@ -27,24 +27,22 @@ def main():
 	while True:
 		if i < 12:
 			GPIO.output(18, GPIO.LOW)  
-			print "Fan 1 is running. Fan 2 off"
+			print "i = " ,i, ", Fan 1 is running. Fan 2 off"
 		else:
 		  	GPIO.output(18, GPIO.HIGH)
-			print "Fan 1 off. Fan 2 is running"
+			print "i = " ,i, ", Fan 1 off. Fan 2 is running"
 		
 		
 		#--------------------------------------------
 		humidity, temperature = Adafruit_DHT.read_retry(22, 4)
-		print(datetime.datetime.now())
 		if humidity is not None and temperature is not None:
-			print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+			print(str(datetime.datetime.now()) + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
 		else:
 			print('Failed to get reading. Try again!')
 		
-		print "i = ",i
 		i += 1
 		time.sleep(SleepTimeL);
-
+		print('-----------')
 		if i > 24:
 			i = 0
 
