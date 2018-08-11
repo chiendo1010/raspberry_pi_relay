@@ -35,12 +35,14 @@ def main():
 		
 		#--------------------------------------------
 		humidity, temperature = Adafruit_DHT.read_retry(22, 4)
+		time.sleep(2);
+		humidity, temperature = Adafruit_DHT.read_retry(22, 4)
 		if humidity is not None and temperature is not None:
 			print(str(datetime.datetime.now()) + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
 		else:
 			print('Failed to get reading. Try again!')
 		
-		if temperature > 32.5 or humidity > 90:
+		if temperature > 33 or humidity > 90:
 			GPIO.output(17, GPIO.LOW)
 			print('Temp or Humidity is too high. Run Fan 3')
 		else:
