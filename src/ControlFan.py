@@ -42,7 +42,8 @@ def main():
 		else:
 			print('Failed to get reading. Try again!')
 
-		if temperature > 32.5 or humidity > 90:
+		#if temperature > 32.5 or humidity > 90:
+        if temperature > 32.5:
 			GPIO.output(17, GPIO.LOW)
 			print('Temp or Humidity is too high. Start Fan 3')
 		else:
