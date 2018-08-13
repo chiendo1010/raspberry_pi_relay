@@ -44,11 +44,11 @@ def main():
 
 		#if temperature > 32.5 or humidity > 90:
         if temperature > 32.5:
-			GPIO.output(17, GPIO.LOW)
-			print('Temp or Humidity is too high. Start Fan 3')
-		else:
-			GPIO.output(17, GPIO.HIGH)
-			print('Turn off Fan 3')
+        	GPIO.output(17, GPIO.LOW)
+        	print('Temp or Humidity is too high. Start Fan 3')
+        else:
+        	GPIO.output(17, GPIO.HIGH)
+        	print('Turn off Fan 3')
 
 		i += 1
 		time.sleep(SleepTimeL);
