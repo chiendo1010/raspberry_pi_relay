@@ -64,6 +64,6 @@ try:
     main()
 except KeyboardInterrupt:
     # End program cleanly with keyboard
-      print " Quit"
+    print " Quit"
       # Reset GPIO settings
     destroy()
