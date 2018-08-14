@@ -50,7 +50,7 @@ def main():
         	GPIO.output(17, GPIO.HIGH)
         	print('Turn off Fan 3')
 
-		i += 1
+		i += 1	#Test
 		time.sleep(SleepTimeL);
 		print('-----------')
 		if i > 24:
