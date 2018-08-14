@@ -29,7 +29,7 @@ while True:
             GPIO.output(18, GPIO.LOW)
             print "i = " ,i, ", Fan 1 is running. Fan 2 off"
         else:
-              GPIO.output(18, GPIO.HIGH)
+            GPIO.output(18, GPIO.HIGH)
             print "i = " ,i, ", Fan 1 off. Fan 2 is running"
 
 
