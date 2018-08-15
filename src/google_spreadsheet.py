@@ -81,7 +81,11 @@ FREQUENCY_SECONDS      = 30
 def login_open_sheet(oauth_key_file, spreadsheet):
     """Connect to Google Docs spreadsheet and return the first worksheet."""
     try:
-        scope =  ['https://spreadsheets.google.com/feeds']
+        # scope =  ['https://spreadsheets.google.com/feeds']
+        scope=[
+            'https://spreadsheets.google.com/feeds',
+            'https://www.googleapis.com/auth/drive'
+        ]
         print('Debug 11111')
         credentials = ServiceAccountCredentials.from_json_keyfile_name(oauth_key_file, scope)
         print('Debug 22222')
