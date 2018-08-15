@@ -46,7 +46,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 DHT_TYPE = Adafruit_DHT.DHT22
 
 # Example of sensor connected to Raspberry Pi pin 23
-DHT_PIN  = 17
+DHT_PIN  = 4
 # Example of sensor connected to Beaglebone Black pin P8_11
 #DHT_PIN  = 'P8_11'
 
