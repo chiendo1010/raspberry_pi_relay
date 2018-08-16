@@ -92,6 +92,8 @@ def main():
         CurrentTime = str(datetime.datetime.now())
         CurrentTime = CurrentTime[:-7]
         print(CurrentTime + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+        format(temperature, '.2f')
+        format(humidity, '.2f')
 
         #if temperature > 32.5 or humidity > 90:
         if temperature > HOT_TEMPERATURE:
