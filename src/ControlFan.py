@@ -105,7 +105,7 @@ def main():
             worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
         # Append the data in the spreadsheet, including a timestamp
         try:
-            worksheet.append_row(CurrentTime, temperature, humidity)
+            worksheet.append_row((CurrentTime, temperature, humidity))
         except:
             # Error appending data, most likely because credentials are stale.
             # Null out the worksheet so a login is performed at the top of the loop.
