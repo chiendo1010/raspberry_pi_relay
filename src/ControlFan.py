@@ -66,6 +66,9 @@ def login_open_sheet(oauth_key_file, spreadsheet):
 
 def main():
     i = 0
+    worksheet = None
+    print('Logging sensor measurements to {0} every {1} seconds.'.format(GDOCS_SPREADSHEET_NAME, SLEEP_TIME))
+    print('Press Ctrl-C to quit.')
     while True:
         if i < TIME_RUNNING_EACH_FAN:
             GPIO.output(FAN_BOX, GPIO.LOW)
@@ -102,8 +105,7 @@ def main():
             worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
         # Append the data in the spreadsheet, including a timestamp
         try:
-            print((datetime.datetime.now(), temp, humidity))
-            worksheet.append_row((datetime.datetime.now(), temp, humidity))
+            worksheet.append_row(CurrentTime, temperature, humidity))
         except:
             # Error appending data, most likely because credentials are stale.
             # Null out the worksheet so a login is performed at the top of the loop.
