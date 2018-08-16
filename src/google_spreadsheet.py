@@ -72,7 +72,7 @@ DHT_PIN  = 4
 GDOCS_OAUTH_JSON       = 'PythonUpdateDrive-d0c1bcd626be.json'
 
 # Google Docs spreadsheet name.
-GDOCS_SPREADSHEET_NAME = 'Test'
+GDOCS_SPREADSHEET_NAME = 'TemperatureInMiningHouse'
 
 # How long to wait (in seconds) between measurements.
 FREQUENCY_SECONDS      = 30
@@ -123,7 +123,7 @@ while True:
 
     # Append the data in the spreadsheet, including a timestamp
     try:
-        worksheet.append_row((datetime.datetime.now(), temp, humidity))
+        worksheet.append_row((str(datetime.datetime.now()), temp, humidity))
     except:
         # Error appending data, most likely because credentials are stale.
         # Null out the worksheet so a login is performed at the top of the loop.
