@@ -17,7 +17,7 @@ DHT_TYPE = Adafruit_DHT.DHT22
 DHT_PIN  = 4
 
 # time to sleep between operations in the main loop
-SLEEP_TIME = 600    #10 minutes
+SLEEP_TIME = 1200    #20 minutes
 TIME_RUNNING_EACH_FAN = 3600/SLEEP_TIME #Each hour, the fan will be changed.
 TIME_RESET_COUNTER = 7200/SLEEP_TIME
 HOT_TEMPERATURE = 32
@@ -92,8 +92,6 @@ def main():
         CurrentTime = str(datetime.datetime.now())
         CurrentTime = CurrentTime[:-7]
         print(CurrentTime + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-        temperature = float("{0:.2f}".format(temperature))
-        humidity = float("{0:.2f}".format(humidity))
 
         #if temperature > 32.5 or humidity > 90:
         if temperature > HOT_TEMPERATURE:
@@ -107,6 +105,8 @@ def main():
             worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
         # Append the data in the spreadsheet, including a timestamp
         try:
+            temperature = str(float("{0:.2f}".format(temperature)))
+            humidity = str(float("{0:.2f}".format(humidity)))
             worksheet.append_row((CurrentTime, temperature, humidity))
         except:
             # Error appending data, most likely because credentials are stale.
@@ -117,13 +117,12 @@ def main():
             # continue
 
         # Wait 30 seconds before continuing
-        print('Wrote a row to {0}'.format(GDOCS_SPREADSHEET_NAME))
+        # print('Wrote a row to {0}'.format(GDOCS_SPREADSHEET_NAME))
 
-
-        i += 1    #Test
         time.sleep(SLEEP_TIME);
+        i += 1
         print('-----------')
-        if i > TIME_RESET_COUNTER:
+        if i >= TIME_RESET_COUNTER:
             i = 0
 
 def destroy():
