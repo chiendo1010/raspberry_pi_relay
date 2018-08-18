@@ -29,7 +29,7 @@ FAN_WALL = 17  #Fan on wall
 FAN_BOX = 18  #Fan in box
 pinList = [FAN_WALL, FAN_BOX]
 
-GDOCS_OAUTH_JSON       = 'PythonUpdateDrive-d0c1bcd626be.json'
+GDOCS_OAUTH_JSON       = '/home/pi/raspberry_pi_relay/trunk/src/PythonUpdateDrive-d0c1bcd626be.json'
 
 # Google Docs spreadsheet name.
 GDOCS_SPREADSHEET_NAME = 'TemperatureInMiningHouse'
