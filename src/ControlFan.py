@@ -53,9 +53,13 @@ def login_open_sheet(oauth_key_file, spreadsheet):
                 'https://spreadsheets.google.com/feeds',
                 'https://www.googleapis.com/auth/drive'
             ]
+            print('Debug 11111')
             credentials = ServiceAccountCredentials.from_json_keyfile_name(oauth_key_file, scope)
+            print('Debug 222222')
             gc = gspread.authorize(credentials)
+            print('Debug 333333')
             worksheet = gc.open(spreadsheet).sheet1
+            print('Debug 44444')
             return worksheet
         except Exception as ex:
             print('Unable to login and get spreadsheet.  Check OAuth credentials, spreadsheet name, and make sure spreadsheet is shared to the client_email address in the OAuth .json file!')
