@@ -65,7 +65,7 @@ def login_open_sheet(oauth_key_file, spreadsheet):
 def updatesToSheet(CurrentTime,temperature,humidity):
     i = 0
     worksheet = None
-    while true:
+    while True:
         if i >= 5:
             break
 
