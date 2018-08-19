@@ -21,6 +21,7 @@ SLEEP_TIME = 1200    #20 minutes
 TIME_RUNNING_EACH_FAN = 3600/SLEEP_TIME #Each hour, the fan will be changed.
 TIME_RESET_COUNTER = 7200/SLEEP_TIME
 HOT_TEMPERATURE = 32
+TIMES_TRY_UPDATE_TO_SHEET = 5
 
 GPIO.setmode(GPIO.BCM)
 
@@ -45,28 +46,26 @@ for i in pinList:
 
 
 def login_open_sheet(oauth_key_file, spreadsheet):
-    while True:
-        """Connect to Google Docs spreadsheet and return the first worksheet."""
-        try:
-            # scope =  ['https://spreadsheets.google.com/feeds']
-            scope=[
-                'https://spreadsheets.google.com/feeds',
-                'https://www.googleapis.com/auth/drive'
-            ]
-            credentials = ServiceAccountCredentials.from_json_keyfile_name(oauth_key_file, scope)
-            gc = gspread.authorize(credentials)
-            worksheet = gc.open(spreadsheet).sheet1
-            return worksheet
-        except Exception as ex:
-            print('Unable to login and get spreadsheet.  Check OAuth credentials, spreadsheet name, and make sure spreadsheet is shared to the client_email address in the OAuth .json file!')
-            print('Google sheet login failed with error:', ex)
-            time.sleep(5)
+    """Connect to Google Docs spreadsheet and return the first worksheet."""
+    try:
+        # scope =  ['https://spreadsheets.google.com/feeds']
+        scope=[
+            'https://spreadsheets.google.com/feeds',
+            'https://www.googleapis.com/auth/drive'
+        ]
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(oauth_key_file, scope)
+        gc = gspread.authorize(credentials)
+        worksheet = gc.open(spreadsheet).sheet1
+        return worksheet
+    except Exception as ex:
+        print('Unable to login and get spreadsheet.  Check OAuth credentials, spreadsheet name, and make sure spreadsheet is shared to the client_email address in the OAuth .json file!')
+        print('Google sheet login failed with error:', ex)
 
 def updatesToSheet(CurrentTime,temperature,humidity):
     i = 0
     worksheet = None
     while True:
-        if i >= 5:
+        if i >= TIMES_TRY_UPDATE_TO_SHEET:
             break
 
         print('Try to update: {0:2}'.format(i+1))
