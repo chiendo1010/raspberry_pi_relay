@@ -62,13 +62,41 @@ def login_open_sheet(oauth_key_file, spreadsheet):
             print('Google sheet login failed with error:', ex)
             time.sleep(5)
 
+def updatesToSheet(CurrentTime,temperature,humidity):
+    i = 0
+    worksheet = None
+    while true:
+        if i >= 5:
+            break
+
+        print('Try to update: {0:2}'.format(i+1))
+        # Login if necessary.
+        if worksheet is None:
+            worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
+        # Append the data in the spreadsheet, including a timestamp
+        try:
+            temperature = float("{0:.2f}".format(temperature))
+            humidity = float("{0:.2f}".format(humidity))
+            worksheet.append_row((CurrentTime, temperature, humidity))
+            i += 1
+            print('Append successful')
+            break
+        except:
+            # Error appending data, most likely because credentials are stale.
+            # Null out the worksheet so a login is performed at the top of the loop.
+            print('Append error, logging in again')
+            worksheet = None
+            # time.sleep(FREQUENCY_SECONDS)
+            # continue
+
+        # Wait 30 seconds before continuing
+        # print('Wrote a row to {0}'.format(GDOCS_SPREADSHEET_NAME))
 
 
 # main loop
 
 def main():
     i = 0
-    worksheet = None
     print('Logging sensor measurements to {0} every {1} seconds.'.format(GDOCS_SPREADSHEET_NAME, SLEEP_TIME))
     print('Press Ctrl-C to quit.')
     while True:
@@ -102,24 +130,7 @@ def main():
         else:
             GPIO.output(FAN_WALL, GPIO.HIGH)
 
-        # Login if necessary.
-        if worksheet is None:
-            worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
-        # Append the data in the spreadsheet, including a timestamp
-        try:
-            temperature = float("{0:.2f}".format(temperature))
-            humidity = float("{0:.2f}".format(humidity))
-            worksheet.append_row((CurrentTime, temperature, humidity))
-        except:
-            # Error appending data, most likely because credentials are stale.
-            # Null out the worksheet so a login is performed at the top of the loop.
-            print('Append error, logging in again')
-            worksheet = None
-            # time.sleep(FREQUENCY_SECONDS)
-            # continue
-
-        # Wait 30 seconds before continuing
-        # print('Wrote a row to {0}'.format(GDOCS_SPREADSHEET_NAME))
+        updatesToSheet(CurrentTime,temperature,humidity)
 
         time.sleep(SLEEP_TIME);
         i += 1
