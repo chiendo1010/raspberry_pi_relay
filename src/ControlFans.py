@@ -63,6 +63,7 @@ def login_open_sheet(oauth_key_file, spreadsheet):
 
 def updatesToSheet(CurrentTime,temperature,humidity):
     i = 0
+    index = 1
     worksheet = None
     while True:
         if i >= TIMES_TRY_UPDATE_TO_SHEET:
@@ -76,7 +77,8 @@ def updatesToSheet(CurrentTime,temperature,humidity):
         try:
             temperature = float("{0:.2f}".format(temperature))
             humidity = float("{0:.2f}".format(humidity))
-            worksheet.append_row((CurrentTime, temperature, humidity))
+            # worksheet.append_row((CurrentTime, temperature, humidity))
+            worksheet.insert_row((CurrentTime, temperature, humidity),index)
             i += 1
             print('Append successful')
             break
@@ -91,20 +93,35 @@ def updatesToSheet(CurrentTime,temperature,humidity):
         # Wait 30 seconds before continuing
         # print('Wrote a row to {0}'.format(GDOCS_SPREADSHEET_NAME))
 
+def CheckChangeFan(i):
+    if i < TIME_RUNNING_EACH_FAN:
+        GPIO.output(FAN_BOX, GPIO.LOW)
+        print "i= " ,i, ", Fan 1 is running. Fan 2 off"
+    else:
+        GPIO.output(FAN_BOX, GPIO.HIGH)
+        print "i= " ,i, ", Fan 1 off. Fan 2 is running"
+
+def CheckFanOnWallAndUpdateToSheet(temperature,humidity):
+    CurrentTime = str(datetime.datetime.now())
+    CurrentTime = CurrentTime[:-7]
+    print(CurrentTime + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+
+    #if temperature > 32.5 or humidity > 90:
+    if temperature >= HOT_TEMPERATURE:
+        GPIO.output(FAN_WALL, GPIO.LOW)
+        print('Temp or Humidity is too high. Starting FAN_WALL')
+    else:
+        GPIO.output(FAN_WALL, GPIO.HIGH)
+
+    updatesToSheet(CurrentTime,temperature,humidity)
 
 # main loop
-
 def main():
     i = 0
     print('Logging sensor measurements to {0} every {1} seconds.'.format(GDOCS_SPREADSHEET_NAME, SLEEP_TIME))
     print('Press Ctrl-C to quit.')
     while True:
-        if i < TIME_RUNNING_EACH_FAN:
-            GPIO.output(FAN_BOX, GPIO.LOW)
-            print "i= " ,i, ", Fan 1 is running. Fan 2 off"
-        else:
-            GPIO.output(FAN_BOX, GPIO.HIGH)
-            print "i= " ,i, ", Fan 1 off. Fan 2 is running"
+        CheckChangeFan(i)
 
         #--------------------------------------------
         humidity, temperature = Adafruit_DHT.read_retry(DHT_TYPE, DHT_PIN)
@@ -118,18 +135,7 @@ def main():
             time.sleep(2)
             continue
 
-        CurrentTime = str(datetime.datetime.now())
-        CurrentTime = CurrentTime[:-7]
-        print(CurrentTime + ' -- Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-
-        #if temperature > 32.5 or humidity > 90:
-        if temperature > HOT_TEMPERATURE:
-            GPIO.output(FAN_WALL, GPIO.LOW)
-            print('Temp or Humidity is too high. Starting FAN_WALL')
-        else:
-            GPIO.output(FAN_WALL, GPIO.HIGH)
-
-        updatesToSheet(CurrentTime,temperature,humidity)
+        CheckFanOnWallAndUpdateToSheet(temperature,humidity)
 
         time.sleep(SLEEP_TIME);
         i += 1
