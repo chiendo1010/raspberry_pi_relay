@@ -22,6 +22,7 @@ TIME_RUNNING_EACH_FAN = 3600/SLEEP_TIME #Each hour, the fan will be changed.
 TIME_RESET_COUNTER = 7200/SLEEP_TIME
 HOT_TEMPERATURE = 32
 TIMES_TRY_UPDATE_TO_SHEET = 5
+INDEX_INSERT_TO_SHEET = 2
 
 GPIO.setmode(GPIO.BCM)
 
@@ -63,7 +64,6 @@ def login_open_sheet(oauth_key_file, spreadsheet):
 
 def updatesToSheet(CurrentTime,temperature,humidity):
     i = 0
-    index = 1
     worksheet = None
     while True:
         if i >= TIMES_TRY_UPDATE_TO_SHEET:
@@ -78,7 +78,7 @@ def updatesToSheet(CurrentTime,temperature,humidity):
             temperature = float("{0:.2f}".format(temperature))
             humidity = float("{0:.2f}".format(humidity))
             # worksheet.append_row((CurrentTime, temperature, humidity))
-            worksheet.insert_row((CurrentTime, temperature, humidity),index)
+            worksheet.insert_row((CurrentTime, temperature, humidity),INDEX_INSERT_TO_SHEET)
             i += 1
             print('Append successful')
             break
