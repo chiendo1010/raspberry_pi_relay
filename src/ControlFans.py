@@ -114,7 +114,7 @@ def CheckFanOnWallAndUpdateToSheet(temperature,humidity):
     else:
         GPIO.output(FAN_WALL, GPIO.HIGH)
 
-    updatesToSheet(CurrentTime,temperature,humidity)
+    # updatesToSheet(CurrentTime,temperature,humidity)
 
 # main loop
 def main():
